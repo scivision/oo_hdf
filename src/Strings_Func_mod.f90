@@ -90,7 +90,7 @@ module Strings_Func_mod
 !------------------------------------------------------------------------
     subroutine ReportLog(logmessage)
       character(*), intent(in)  :: logmessage
-      write(*,*) trim(logmessage)
+      print *,trim(logmessage)
     end subroutine ReportLog
 !##################################################################################################################################!
 !------------------------------------------------------------------------
@@ -129,7 +129,6 @@ module Strings_Func_mod
         end do
       end if
 
-      deallocate(position_under)
     end subroutine Decomp_Names
 !##################################################################################################################################!
 end module Strings_Func_mod
