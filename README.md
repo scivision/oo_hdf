@@ -16,7 +16,7 @@ There are two main classes, *H5Group* and *H5Dataset*. The *H5File* is extended 
 
 This library was tested with versions:
  - **HDF5**: 1.8.11, 1.8.16, 1.10.1
- - **gfortran**: 4.8.\*, 5.4.\*, 6.\*, 7.\*, 8.\*
+ - **gfortran**: 4.8.\*, 5.4.\*, 6.\*, 7.\*
 
 The following methods have been tested in several ways, most of them in production code:
  - All H5File

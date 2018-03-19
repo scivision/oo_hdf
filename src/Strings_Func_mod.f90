@@ -41,11 +41,11 @@ module Strings_Func_mod
 !------------------------------------------------------------------------
     elemental function To_upper(str)
       character(*), intent(in) :: str
-      character(len=len(str))  :: To_upper
+      character(len(str))  :: To_upper
       integer :: i
 
       To_upper=str
-      do i = 1, len(str)
+      do concurrent (i = 1:len(str))
         select case(str(i:i))
         case("a":"z")
           To_upper(i:i) = achar(iachar(str(i:i))-32)
@@ -55,11 +55,11 @@ module Strings_Func_mod
 !------------------------------------------------------------------------
     elemental function To_lower(str)
       character(*), intent(in) :: str
-      character(len=len(str))  :: To_lower
+      character(len(str))  :: To_lower
       integer :: i
 
       To_lower=str
-      do i = 1, len(str)
+      do concurrent (i = 1:len(str))
         select case(str(i:i))
         case("A":"Z")
           To_lower(i:i) = achar(iachar(str(i:i))+32)
@@ -70,39 +70,39 @@ module Strings_Func_mod
 !------------------------------------------------------------------------
 ! ...function N_Lines: Count number of lines of input file...
 !------------------------------------------------------------------------
-    integer(kind=I32) function N_Lines(filein)
-      character(len=*), intent(in) :: filein
-      integer(kind=I8)  :: io, nunit
+    integer function N_Lines(filein)
+      character(*), intent(in) :: filein
+      integer  :: io, u
 
-      open (newunit=nunit,file=trim(filein),iostat=io)
+      open(newunit=u,file=trim(filein),iostat=io)
       N_Lines=-1
 
       do while (io==0)
         N_Lines = N_Lines + 1
-        read(nunit,*,iostat=io)
+        read(u,*,iostat=io)
       end do
 
-      close(nunit)
+      close(u)
     end function N_Lines
 !##################################################################################################################################!
 !------------------------------------------------------------------------
 ! ...subroutine reportLog: Print a message to display...
 !------------------------------------------------------------------------
     subroutine ReportLog(logmessage)
-      character(len=*), intent(in)  :: logmessage
-      write(*,*)trim(logmessage)
+      character(*), intent(in)  :: logmessage
+      write(*,*) trim(logmessage)
     end subroutine ReportLog
 !##################################################################################################################################!
 !------------------------------------------------------------------------
 ! ...subroutine Decomp_Names: decompose the filenamein array in fields...
 !------------------------------------------------------------------------
     pure subroutine Decomp_Names(filenamein,field_names)
-      character(len=*), intent(out)  :: field_names(:)    !string containing the names of the filenamein
-      character(len=*),  intent(in)  :: filenamein        !input string to be decomposed
-      integer(kind=I16)              :: reset             !position of first slash (/)
-      integer(kind=I16), allocatable :: position_under(:) !positions of the found underscores
-      integer(kind=I16)              :: name_len, name_spaces
-      integer(kind=I16)              :: i
+      character(*), intent(out)  :: field_names(:)    !string containing the names of the filenamein
+      character(*),  intent(in)  :: filenamein        !input string to be decomposed
+      integer(I16)              :: reset             !position of first slash (/)
+      integer(I16), allocatable :: position_under(:) !positions of the found underscores
+      integer(I16)              :: name_len, name_spaces
+      integer(I16)              :: i
       !-----------------------------------------------------------------------------------------------
 
       name_spaces=size(field_names)
