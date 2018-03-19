@@ -2552,7 +2552,7 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
       if (present(fill_val)) then
         call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
@@ -2732,7 +2732,7 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
       if (present(fill_val)) then
         call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
@@ -2912,7 +2912,7 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
       if (present(fill_val)) then
         call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
@@ -3091,7 +3091,7 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
       if (present(fill_val)) then
         call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
@@ -3271,7 +3271,7 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
       if (present(fill_val)) then
         call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
@@ -3451,7 +3451,7 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
       if (present(fill_val)) then
         call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
