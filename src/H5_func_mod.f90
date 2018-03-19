@@ -348,7 +348,7 @@ module H5_Func_mod
       ! If no input arguments for the dataset name and index are given,
       ! the group identifier is returned.
       ! If no group id is given, the root group ("/") is returned.
-      integer, intent(in) :: file_id
+      integer(HID_T), intent(in) :: file_id
       character (len=*) ,optional, intent(in) :: d_name
       character (len=LEN_STR_ATTR) :: buff_name
       integer(kind=HID_T), optional, intent(in) :: d_idx
@@ -406,7 +406,7 @@ module H5_Func_mod
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, type_id
         integer :: hdferr
-        integer(HID_T), intent(out) :: att_type
+        integer, intent(out) :: att_type
         integer(SIZE_T), intent(out) :: att_type_size
 
         call h5aopen_f(obj_id, a_name, attr_id, hdferr)
@@ -433,7 +433,7 @@ module H5_Func_mod
     character(len=*), intent(in) :: a_name   !< name of dataset
     integer, intent(out) :: dims(:)             !< dimensions of the dataset
     integer(HID_T) :: attr_id, dspace_id
-    integer(kind=HID_T) :: D_RANK
+    integer :: D_RANK
     integer(HSIZE_T) :: aset_dims(6), max_dims(6)
     integer :: hdferr
 
@@ -463,7 +463,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 2 ! DataType Size in Bytes
@@ -484,19 +484,18 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 2 ! DataType Size in Bytes
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
-        integer(kind=HID_T), parameter :: A_RANK=rank(val)
 
         call H5tcopy_f(H5T_STD_I16LE, type_id, hdferr)
         adims = shape(val, kind=HID_T)
         if( adims(1)==1 ) then
           call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         else
-          call H5screate_simple_f(A_RANK, adims, space_id, hdferr)
+          call H5screate_simple_f(rank(val), adims, space_id, hdferr)
         end if
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
@@ -510,7 +509,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 4 ! DataType Size in Bytes
@@ -531,19 +530,18 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 4 ! DataType Size in Bytes
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
-        integer(kind=HID_T), parameter :: A_RANK=rank(val)
 
         call H5tcopy_f(H5T_NATIVE_INTEGER, type_id, hdferr)
         adims = shape(val, kind=HID_T)
         if( adims(1)==1 ) then
           call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         else
-          call H5screate_simple_f(A_RANK, adims, space_id, hdferr)
+          call H5screate_simple_f(rank(val), adims, space_id, hdferr)
         end if
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
@@ -557,7 +555,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T) :: HDFSIZE
@@ -579,19 +577,18 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
         integer(kind=SIZE_T) :: HDFSIZE
-        integer(kind=HID_T), parameter :: A_RANK=rank(val)
 
         call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
         adims = shape(val, kind=HID_T)
         if( adims(1)==1 ) then
           call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         else
-          call H5screate_simple_f(A_RANK, adims, space_id, hdferr)
+          call H5screate_simple_f(rank(val), adims, space_id, hdferr)
         end if
         HDFSIZE=len(val)
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
@@ -614,7 +611,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 4 ! DataType Size in Bytes
@@ -643,19 +640,18 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 4 ! DataType Size in Bytes
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
-        integer(kind=HID_T), parameter :: A_RANK=rank(val)
 
         call H5tcopy_f(H5T_NATIVE_REAL, type_id, hdferr)
         adims = shape(val, kind=HID_T)
         if( adims(1)==1 ) then
           call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         else
-          call H5screate_simple_f(A_RANK, adims, space_id, hdferr)
+          call H5screate_simple_f(rank(val), adims, space_id, hdferr)
         end if
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
@@ -677,7 +673,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 8 ! DataType Size in Bytes
@@ -706,19 +702,18 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 8 ! DataType Size in Bytes
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
-        integer(kind=HID_T), parameter :: A_RANK=rank(val)
 
         call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
         adims = shape(val, kind=HID_T)
         if( adims(1)==1 ) then
           call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         else
-          call H5screate_simple_f(A_RANK, adims, space_id, hdferr)
+          call H5screate_simple_f(rank(val), adims, space_id, hdferr)
         end if
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
@@ -734,7 +729,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         integer(HID_T) :: dset_id, space_id
         character (len=*), intent(in) :: d_name
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(HSIZE_T) :: adims(1) ! Attribut Dimension
@@ -754,7 +749,7 @@ module H5_Func_mod
         implicit none
         integer(HID_T), intent(in) :: obj_id
         integer(kind=HID_T), intent(out) :: val(:)
-        integer(kind=HID_T), parameter :: D_RANK=rank(val)
+        integer, parameter :: D_RANK=rank(val)
         character(len=255), intent(in) :: dset_name
         integer(kind=HSIZE_T), intent(in) :: offset(D_RANK), dshape(D_RANK)
         integer(kind=HSIZE_T) :: offset_out(D_RANK)
@@ -817,7 +812,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         integer(kind=HID_T), intent(out) :: val(:,:)
-        integer(kind=HID_T), parameter :: D_RANK=rank(val)
+        integer, parameter :: D_RANK=rank(val)
         integer(kind=HSIZE_T), intent(in) :: offset(D_RANK), dshape(D_RANK)
         integer(kind=HSIZE_T) :: offset_out(D_RANK)
         integer :: ierr
@@ -879,7 +874,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         integer(kind=HID_T), intent(out) :: val(:,:,:)
-        integer(kind=HID_T), parameter :: D_RANK=rank(val)
+        integer, parameter :: D_RANK=rank(val)
         integer(kind=HSIZE_T), intent(in) :: offset(D_RANK), dshape(D_RANK)
         integer(kind=HSIZE_T) :: offset_out(D_RANK)
         integer :: ierr
@@ -941,7 +936,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         integer(kind=HID_T), intent(out) :: val(:,:,:,:)
-        integer(kind=HID_T), parameter :: D_RANK=rank(val)
+        integer, parameter :: D_RANK=rank(val)
         integer(kind=HSIZE_T), intent(in) :: offset(D_RANK), dshape(D_RANK)
         integer(kind=HSIZE_T) :: offset_out(D_RANK)
         integer :: ierr
@@ -1003,7 +998,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         integer(kind=HID_T), intent(out) :: val(:,:,:,:,:)
-        integer(kind=HID_T), parameter :: D_RANK=rank(val)
+        integer, parameter :: D_RANK=rank(val)
         integer(kind=HSIZE_T), intent(in) :: offset(D_RANK), dshape(D_RANK)
         integer(kind=HSIZE_T) :: offset_out(D_RANK)
         integer :: ierr
@@ -1071,7 +1066,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T) :: hdfsize
@@ -1100,7 +1095,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T) :: hdfsize
@@ -1129,7 +1124,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T) :: hdfsize
@@ -1158,7 +1153,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T) :: hdfsize
@@ -1187,7 +1182,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T) :: hdfsize
@@ -1216,7 +1211,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T) :: hdfsize
@@ -1246,7 +1241,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T) :: hdfsize
@@ -1275,7 +1270,7 @@ module H5_Func_mod
         integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer(kind=HID_T) :: stat
+        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T) :: hdfsize
@@ -1636,7 +1631,7 @@ module H5_Func_mod
       integer(kind=I8), contiguous, intent(in) :: val(:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1644,8 +1639,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1666,7 +1661,7 @@ module H5_Func_mod
       integer(kind=I16), contiguous, intent(in) :: val(:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1674,8 +1669,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1696,7 +1691,7 @@ module H5_Func_mod
       integer(kind=HID_T), contiguous, intent(in) :: val(:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1704,8 +1699,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1726,7 +1721,7 @@ module H5_Func_mod
       real(kind=SP), contiguous, intent(in) :: val(:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1734,8 +1729,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1756,7 +1751,7 @@ module H5_Func_mod
       real(kind=DP), contiguous, intent(in) :: val(:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1764,8 +1759,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1786,7 +1781,7 @@ module H5_Func_mod
       integer(kind=I8), contiguous, intent(in) :: val(:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1794,8 +1789,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1816,7 +1811,7 @@ module H5_Func_mod
       integer(kind=I16), contiguous, intent(in) :: val(:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1824,8 +1819,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1846,7 +1841,7 @@ module H5_Func_mod
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1854,8 +1849,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1876,7 +1871,7 @@ module H5_Func_mod
       real(kind=SP), contiguous, intent(in) :: val(:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1884,8 +1879,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1906,7 +1901,7 @@ module H5_Func_mod
       real(kind=DP), contiguous, intent(in) :: val(:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1914,8 +1909,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1936,7 +1931,7 @@ module H5_Func_mod
       integer(kind=I8), contiguous, intent(in) :: val(:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1944,8 +1939,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1966,7 +1961,7 @@ module H5_Func_mod
       integer(kind=I16), contiguous, intent(in) :: val(:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -1974,8 +1969,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -1996,7 +1991,7 @@ module H5_Func_mod
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2004,8 +1999,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2026,7 +2021,7 @@ module H5_Func_mod
       real(kind=SP), contiguous, intent(in) :: val(:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2034,8 +2029,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2056,7 +2051,7 @@ module H5_Func_mod
       real(kind=DP), contiguous, intent(in) :: val(:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2064,8 +2059,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2086,7 +2081,7 @@ module H5_Func_mod
       integer(kind=I8), contiguous, intent(in) :: val(:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2094,8 +2089,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2116,7 +2111,7 @@ module H5_Func_mod
       integer(kind=I16), contiguous, intent(in) :: val(:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2124,8 +2119,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2146,7 +2141,7 @@ module H5_Func_mod
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2154,8 +2149,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2176,7 +2171,7 @@ module H5_Func_mod
       real(kind=SP), contiguous, intent(in) :: val(:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2184,8 +2179,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2206,7 +2201,7 @@ module H5_Func_mod
       real(kind=DP), contiguous, intent(in) :: val(:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2214,8 +2209,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2236,7 +2231,7 @@ module H5_Func_mod
       integer(kind=I8), contiguous, intent(in) :: val(:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2244,8 +2239,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2266,7 +2261,7 @@ module H5_Func_mod
       integer(kind=I16), contiguous, intent(in) :: val(:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2274,8 +2269,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2296,7 +2291,7 @@ module H5_Func_mod
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2304,8 +2299,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2326,7 +2321,7 @@ module H5_Func_mod
       real(kind=SP), contiguous, intent(in) :: val(:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2334,8 +2329,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2356,7 +2351,7 @@ module H5_Func_mod
       real(kind=DP), contiguous, intent(in) :: val(:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2364,8 +2359,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2386,7 +2381,7 @@ module H5_Func_mod
       integer(kind=I8), contiguous, intent(in) :: val(:,:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2394,8 +2389,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2416,7 +2411,7 @@ module H5_Func_mod
       integer(kind=I16), contiguous, intent(in) :: val(:,:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2424,8 +2419,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2446,7 +2441,7 @@ module H5_Func_mod
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2454,8 +2449,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2476,7 +2471,7 @@ module H5_Func_mod
       real(kind=SP), contiguous, intent(in) :: val(:,:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2484,8 +2479,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2506,7 +2501,7 @@ module H5_Func_mod
       real(kind=DP), contiguous, intent(in) :: val(:,:,:,:,:,:)
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T), intent(in) :: loc_id
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(kind=HSIZE_T), intent(in) :: new_size(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: offset(D_RANK)
       integer(kind=HSIZE_T), intent(in) :: dshape(D_RANK)
@@ -2514,8 +2509,8 @@ module H5_Func_mod
       integer(kind=HID_T) :: dataspace
       integer(kind=HID_T) :: memspace
       integer(kind=HID_T) :: dset_id
-      integer(kind=HID_T) :: error
-      integer(kind=HID_T) :: stat
+      integer :: error
+      integer :: stat
 
       data_dims = dshape
 
@@ -2537,11 +2532,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2573,11 +2568,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2609,11 +2604,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2645,11 +2640,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2681,11 +2676,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2717,11 +2712,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2753,11 +2748,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2789,11 +2784,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2825,11 +2820,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2861,11 +2856,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2897,11 +2892,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2933,11 +2928,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -2968,11 +2963,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3004,11 +2999,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3040,11 +3035,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3076,11 +3071,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3112,11 +3107,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3148,11 +3143,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3184,11 +3179,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3220,11 +3215,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3256,11 +3251,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3292,11 +3287,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3328,11 +3323,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3364,11 +3359,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3400,11 +3395,11 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
+      integer :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3423,7 +3418,7 @@ module H5_Func_mod
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, hdferr)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3436,11 +3431,10 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3459,7 +3453,7 @@ module H5_Func_mod
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, hdferr)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3468,15 +3462,14 @@ module H5_Func_mod
 
 !#################################################################################################!
     function Create_Int16_6d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
-      integer(kind=I16), contiguous, intent(in) :: val(:,:,:,:,:,:)
+      integer(I16), contiguous, intent(in) :: val(:,:,:,:,:,:)
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3495,7 +3488,7 @@ module H5_Func_mod
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, val, adims, hdferr)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3504,15 +3497,14 @@ module H5_Func_mod
 
 !#################################################################################################!
     function Create_Int32_6d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
-      integer(kind=HID_T), contiguous, intent(in) :: val(:,:,:,:,:,:)
+      integer(I32), contiguous, intent(in) :: val(:,:,:,:,:,:)
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
       integer :: hdferr
       integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3531,7 +3523,7 @@ module H5_Func_mod
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, val, adims, hdferr)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3547,7 +3539,7 @@ module H5_Func_mod
       integer :: hdferr
       integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
@@ -3584,7 +3576,7 @@ module H5_Func_mod
       integer :: hdferr
       integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
-      integer(kind=HID_T), optional, intent(in) :: fill_val
+      integer, optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
       integer(kind=HID_T), optional, intent(in) :: in_chunk_size ! Chunk size
