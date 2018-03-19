@@ -33,6 +33,7 @@
 module H5_Func_mod
   use hdf5
   use h5ds
+  use h5d
   use Types_mod
   use Strings_Func_mod, only: To_upper
   implicit none
@@ -3539,11 +3540,10 @@ module H5_Func_mod
 
 !#################################################################################################!
     function Create_Real32_6d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
-      real(kind=SP), contiguous, intent(in) :: val(:,:,:,:,:,:)
+      real(SP), contiguous, intent(in) :: val(:,:,:,:,:,:)
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
       integer :: hdferr
       integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
@@ -3566,7 +3566,9 @@ module H5_Func_mod
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, adims, stat)
+
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, adims, hdferr)
+
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3579,7 +3581,6 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer(kind=HID_T) :: stat
       integer :: hdferr
       integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
@@ -3602,7 +3603,9 @@ module H5_Func_mod
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
+
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, hdferr)
+
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
