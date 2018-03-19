@@ -468,12 +468,12 @@ module H5_Func_mod
         integer(SIZE_T), parameter :: HDFSIZE = 2 ! DataType Size in Bytes
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
 
-        call H5tcopy_f(H5T_NATIVE_INTEGER_2, type_id, hdferr)
+        call H5tcopy_f(H5T_STD_I16LE, type_id, hdferr)
         adims = [0]
         call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
-        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
         call H5aclose_f(attr_id,hdferr)
     end function Create_Int16_Attr0
 
@@ -490,7 +490,7 @@ module H5_Func_mod
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
         integer(kind=HID_T), parameter :: A_RANK=rank(val)
 
-        call H5tcopy_f(H5T_NATIVE_INTEGER_2, type_id, hdferr)
+        call H5tcopy_f(H5T_STD_I16LE, type_id, hdferr)
         adims = shape(val, kind=HID_T)
         if( adims(1)==1 ) then
           call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
@@ -499,7 +499,7 @@ module H5_Func_mod
         end if
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
-        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
         call H5aclose_f(attr_id,hdferr)
     end function Create_Int16_Attr1
 
@@ -515,12 +515,12 @@ module H5_Func_mod
         integer(SIZE_T), parameter :: HDFSIZE = 4 ! DataType Size in Bytes
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
 
-        call H5tcopy_f(H5T_NATIVE_INTEGER_4, type_id, hdferr)
+        call H5tcopy_f(H5T_NATIVE_INTEGER, type_id, hdferr)
         adims = [0]
         call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
-        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER_4, val, adims, stat)
+        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER, val, adims, stat)
         call H5aclose_f(attr_id,hdferr)
     end function Create_Int32_Attr0
 
@@ -537,7 +537,7 @@ module H5_Func_mod
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
         integer(kind=HID_T), parameter :: A_RANK=rank(val)
 
-        call H5tcopy_f(H5T_NATIVE_INTEGER_4, type_id, hdferr)
+        call H5tcopy_f(H5T_NATIVE_INTEGER, type_id, hdferr)
         adims = shape(val, kind=HID_T)
         if( adims(1)==1 ) then
           call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
@@ -546,7 +546,7 @@ module H5_Func_mod
         end if
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
-        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER_4, val, adims, stat)
+        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER, val, adims, stat)
         call H5aclose_f(attr_id,hdferr)
     end function Create_Int32_Attr1
 
@@ -2554,12 +2554,12 @@ module H5_Func_mod
 
       call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2588,14 +2588,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_2, type_id, hdferr)
+      call H5tcopy_f(H5T_STD_I16LE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2624,14 +2624,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_INTEGER, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2734,12 +2734,12 @@ module H5_Func_mod
 
       call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2768,14 +2768,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_2, type_id, hdferr)
+      call H5tcopy_f(H5T_STD_I16LE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2804,14 +2804,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_INTEGER, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2914,12 +2914,12 @@ module H5_Func_mod
 
       call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2947,14 +2947,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_2, type_id, hdferr)
+      call H5tcopy_f(H5T_STD_I16LE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2983,14 +2983,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_INTEGER, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3093,12 +3093,12 @@ module H5_Func_mod
 
       call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3127,14 +3127,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_2, type_id, hdferr)
+      call H5tcopy_f(H5T_STD_I16LE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3163,14 +3163,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_INTEGER, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3273,12 +3273,12 @@ module H5_Func_mod
 
       call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3307,14 +3307,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_2, type_id, hdferr)
+      call H5tcopy_f(H5T_STD_I16LE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3343,14 +3343,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_INTEGER, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3453,12 +3453,12 @@ module H5_Func_mod
 
       call H5tcopy_f(H5T_NATIVE_INTEGER_1, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3487,14 +3487,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_2, type_id, hdferr)
+      call H5tcopy_f(H5T_STD_I16LE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3523,14 +3523,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_INTEGER_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_INTEGER, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER_4, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER_4, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
