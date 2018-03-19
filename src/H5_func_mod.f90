@@ -222,9 +222,8 @@ module H5_Func_mod
 !#################################################################################################!
   function grp_num_of_obj(grp_id, nlinks) result(hdferr)
     integer(kind=HID_T), intent(in) :: grp_id   !< id for the group
-    integer(kind=HID_T), intent(out) :: nlinks
-    integer(kind=HID_T) :: storage_type, max_corder
-    integer :: hdferr
+    integer, intent(out) :: nlinks
+    integer :: max_corder, storage_type, hdferr
 
     call h5gget_info_f(grp_id, storage_type, nlinks, max_corder, hdferr)
   end function grp_num_of_obj
@@ -248,7 +247,7 @@ module H5_Func_mod
   function grp_obj_type(grp_id, obj_name, obj_type) result(hdferr)
     integer(kind=HID_T), intent(in) :: grp_id   !< id for the group
     character(len=*), intent(in) :: obj_name
-    integer(kind=HID_T), intent(out) :: obj_type
+    integer, intent(out) :: obj_type
     integer(kind=HID_T) :: obj_id
     integer :: hdferr
 
@@ -262,8 +261,7 @@ module H5_Func_mod
     integer(kind=HID_T), intent(in) :: grp_id   !< id for the group
     character(len=*), intent(in) :: obj_name
     logical, intent(out) :: is_dset
-    integer(kind=HID_T) :: obj_type
-    integer :: hdferr
+    integer :: obj_type, hdferr
 
     hdferr = grp_obj_type(grp_id, obj_name, obj_type)
     is_dset=.false.
@@ -275,8 +273,7 @@ module H5_Func_mod
     integer(kind=HID_T), intent(in) :: grp_id   !< id for the group
     character(len=*), intent(in) :: obj_name
     logical, intent(out) :: is_grp
-    integer(kind=HID_T) :: obj_type
-    integer :: hdferr
+    integer :: obj_type, hdferr
 
     hdferr = grp_obj_type(grp_id, obj_name, obj_type)
     is_grp=.false.
@@ -305,7 +302,7 @@ module H5_Func_mod
     character(len=*), intent(in) :: dset_name   !< name of dataset
     integer, intent(out) :: dims(:)             !< dimensions of the dataset
     integer(HID_T) :: dset_id, dspace_id
-    integer(kind=HID_T) :: D_RANK
+    integer :: D_RANK
     integer(HSIZE_T) :: dset_dims(6), max_dims(6)
     integer :: hdferr
 
@@ -351,10 +348,10 @@ module H5_Func_mod
       integer(HID_T), intent(in) :: file_id
       character (len=*) ,optional, intent(in) :: d_name
       character (len=LEN_STR_ATTR) :: buff_name
-      integer(kind=HID_T), optional, intent(in) :: d_idx
+      integer, optional, intent(in) :: d_idx
       integer, optional, intent (out) :: stat
       integer :: hdferr
-      integer(kind=HID_T) :: obj_type
+      integer :: obj_type
       integer(HID_T), optional ,intent(in) :: gr_id
       integer(HID_T) :: buff_gr_id
 
