@@ -326,15 +326,15 @@ module H5_Func_mod
       integer, intent(out) :: hdferr
       integer, intent(out) :: dset_type
       integer(SIZE_T), intent(out) :: dset_type_size
-      
-      
+
+
       dset_id=open_dset(loc_id, dset_name)
-      
+
       call h5dget_type_f(dset_id, datatype_id, hdferr)
       call h5tget_class_f(datatype_id, dset_type, hdferr)
       call h5tget_size_f(datatype_id, dset_type_size, hdferr)
       call h5tclose_f(datatype_id, hdferr)
-      
+
       hdferr=close_dset(dset_id)
     end subroutine get_dset_type
 
@@ -619,12 +619,12 @@ module H5_Func_mod
         integer(SIZE_T), parameter :: HDFSIZE = 4 ! DataType Size in Bytes
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
 
-        call H5tcopy_f(H5T_NATIVE_REAL_4, type_id, hdferr)
+        call H5tcopy_f(H5T_NATIVE_REAL, type_id, hdferr)
         adims = [0]
         call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
-        call H5awrite_f(attr_id, H5T_NATIVE_REAL_4, val, adims, stat)
+        call H5awrite_f(attr_id, H5T_NATIVE_REAL, val, adims, stat)
         call H5aclose_f(attr_id,hdferr)
     end function Create_Real32_Attr0
 
@@ -649,7 +649,7 @@ module H5_Func_mod
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
         integer(kind=HID_T), parameter :: A_RANK=rank(val)
 
-        call H5tcopy_f(H5T_NATIVE_REAL_4, type_id, hdferr)
+        call H5tcopy_f(H5T_NATIVE_REAL, type_id, hdferr)
         adims = shape(val, kind=HID_T)
         if( adims(1)==1 ) then
           call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
@@ -658,7 +658,7 @@ module H5_Func_mod
         end if
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
-        call H5awrite_f(attr_id, H5T_NATIVE_REAL_4, val, adims, stat)
+        call H5awrite_f(attr_id, H5T_NATIVE_REAL, val, adims, stat)
         call H5aclose_f(attr_id,hdferr)
     end function Create_Real32_Attr1
 
@@ -682,7 +682,7 @@ module H5_Func_mod
         integer(SIZE_T), parameter :: HDFSIZE = 8 ! DataType Size in Bytes
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
 
-        call H5tcopy_f(H5T_NATIVE_REAL_8, type_id, hdferr)
+        call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
         adims = [0]
         call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
@@ -712,7 +712,7 @@ module H5_Func_mod
         integer(HSIZE_T) :: adims(1) !Attribut Dimension
         integer(kind=HID_T), parameter :: A_RANK=rank(val)
 
-        call H5tcopy_f(H5T_NATIVE_REAL_8, type_id, hdferr)
+        call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
         adims = shape(val, kind=HID_T)
         if( adims(1)==1 ) then
           call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
@@ -801,7 +801,7 @@ module H5_Func_mod
 
         call H5sselect_hyperslab_f(memspace, H5S_SELECT_SET_F, offset_out, dshape, ierr)
 
-        call H5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dshape, ierr, memspace, dataspace)
+        call H5dread_f(dset_id, H5T_NATIVE_REAL, val, dshape, ierr, memspace, dataspace)
 
         call H5sclose_f(dataspace, ierr)
         call H5sclose_f(memspace, ierr)
@@ -863,7 +863,7 @@ module H5_Func_mod
 
         call H5sselect_hyperslab_f(memspace, H5S_SELECT_SET_F, offset_out, dshape, ierr)
 
-        call H5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dshape, ierr, memspace, dataspace)
+        call H5dread_f(dset_id, H5T_NATIVE_REAL, val, dshape, ierr, memspace, dataspace)
 
         call H5sclose_f(dataspace, ierr)
         call H5sclose_f(memspace, ierr)
@@ -925,7 +925,7 @@ module H5_Func_mod
 
         call H5sselect_hyperslab_f(memspace, H5S_SELECT_SET_F, offset_out, dshape, ierr)
 
-        call H5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dshape, ierr, memspace, dataspace)
+        call H5dread_f(dset_id, H5T_NATIVE_REAL, val, dshape, ierr, memspace, dataspace)
 
         call H5sclose_f(dataspace, ierr)
         call H5sclose_f(memspace, ierr)
@@ -987,7 +987,7 @@ module H5_Func_mod
 
         call H5sselect_hyperslab_f(memspace, H5S_SELECT_SET_F, offset_out, dshape, ierr)
 
-        call H5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dshape, ierr, memspace, dataspace)
+        call H5dread_f(dset_id, H5T_NATIVE_REAL, val, dshape, ierr, memspace, dataspace)
 
         call H5sclose_f(dataspace, ierr)
         call H5sclose_f(memspace, ierr)
@@ -1049,7 +1049,7 @@ module H5_Func_mod
 
         call H5sselect_hyperslab_f(memspace, H5S_SELECT_SET_F, offset_out, dshape, ierr)
 
-        call H5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dshape, ierr, memspace, dataspace)
+        call H5dread_f(dset_id, H5T_NATIVE_REAL, val, dshape, ierr, memspace, dataspace)
 
         call H5sclose_f(dataspace, ierr)
         call H5sclose_f(memspace, ierr)
@@ -1414,7 +1414,7 @@ module H5_Func_mod
 
       dims = (/ 0 /)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_REAL, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real32_0d_dataset
 
@@ -1430,7 +1430,7 @@ module H5_Func_mod
 
       dims = shape(val, kind=HID_T)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_REAL, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real32_1d_dataset
 
@@ -1446,7 +1446,7 @@ module H5_Func_mod
 
       dims = shape(val, kind=HID_T)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_REAL, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real32_2d_dataset
 
@@ -1462,7 +1462,7 @@ module H5_Func_mod
 
       dims = shape(val, kind=HID_T)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_REAL, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real32_3d_dataset
 
@@ -1478,7 +1478,7 @@ module H5_Func_mod
 
       dims = shape(val, kind=HID_T)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_REAL, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real32_4d_dataset
 
@@ -1495,7 +1495,7 @@ module H5_Func_mod
       dims = shape(val, kind=HID_T)
 
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_REAL, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real32_5d_dataset
 
@@ -1512,7 +1512,7 @@ module H5_Func_mod
       dims = shape(val, kind=HID_T)
 
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_4, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_REAL, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real32_6d_dataset
 
@@ -1528,7 +1528,7 @@ module H5_Func_mod
 
       dims = (/ 0 /)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_8, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_DOUBLE, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real64_0d_dataset
 
@@ -1544,7 +1544,7 @@ module H5_Func_mod
 
       dims = shape(val, kind=HID_T)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_8, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_DOUBLE, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real64_1d_dataset
 
@@ -1560,7 +1560,7 @@ module H5_Func_mod
 
       dims = shape(val, kind=HID_T)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_8, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_DOUBLE, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real64_2d_dataset
 
@@ -1576,7 +1576,7 @@ module H5_Func_mod
 
       dims = shape(val, kind=HID_T)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_8, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_DOUBLE, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real64_3d_dataset
 
@@ -1592,7 +1592,7 @@ module H5_Func_mod
 
       dims = shape(val, kind=HID_T)
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_8, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_DOUBLE, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real64_4d_dataset
 
@@ -1609,7 +1609,7 @@ module H5_Func_mod
       dims = shape(val, kind=HID_T)
 
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_8, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_DOUBLE, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real64_5d_dataset
 
@@ -1626,7 +1626,7 @@ module H5_Func_mod
       dims = shape(val, kind=HID_T)
 
       call h5dopen_f(loc_id, dset_name, dset_id, ierr)
-      call h5dread_f(dset_id, H5T_NATIVE_REAL_8, val, dims, ierr)
+      call h5dread_f(dset_id, H5T_NATIVE_DOUBLE, val, dims, ierr)
       call h5dclose_f(dset_id, ierr)
     end function Read_Real64_6d_dataset
 
@@ -1744,7 +1744,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -1774,7 +1774,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -1894,7 +1894,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -1924,7 +1924,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -2044,7 +2044,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -2074,7 +2074,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -2194,7 +2194,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -2224,7 +2224,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -2344,7 +2344,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -2374,7 +2374,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, data_dims, stat, memspace, dataspace)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -2494,7 +2494,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call h5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, data_dims, stat, memspace, dataspace)
+      call h5dwrite_f(dset_id, H5T_NATIVE_REAL, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -2524,7 +2524,7 @@ module H5_Func_mod
       call h5dget_space_f(dset_id, dataspace, error)
       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, dshape, error)
 
-      call h5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, data_dims, stat, memspace, dataspace)
+      call h5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, data_dims, stat, memspace, dataspace)
 
       call h5sclose_f(dataspace, error)
       call h5dclose_f(dset_id, error)
@@ -2660,14 +2660,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_REAL, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_4, real(fill_val, kind=SP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL, real(fill_val, kind=SP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2696,14 +2696,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_8, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_8, real(fill_val, kind=DP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_DOUBLE, real(fill_val, kind=DP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2840,14 +2840,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_REAL, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_4, real(fill_val, kind=SP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL, real(fill_val, kind=SP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -2876,14 +2876,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_8, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_8, real(fill_val, kind=DP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_DOUBLE, real(fill_val, kind=DP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3019,14 +3019,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_REAL, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_4, real(fill_val, kind=SP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL, real(fill_val, kind=SP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3055,14 +3055,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_8, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_8, real(fill_val, kind=DP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_DOUBLE, real(fill_val, kind=DP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3199,14 +3199,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_REAL, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_4, real(fill_val, kind=SP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL, real(fill_val, kind=SP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3235,14 +3235,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_8, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_8, real(fill_val, kind=DP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_DOUBLE, real(fill_val, kind=DP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3379,14 +3379,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_REAL, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_4, real(fill_val, kind=SP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL, real(fill_val, kind=SP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3415,14 +3415,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_8, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_8, real(fill_val, kind=DP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_DOUBLE, real(fill_val, kind=DP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3559,14 +3559,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_4, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_REAL, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_4, real(fill_val, kind=SP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL, real(fill_val, kind=SP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_4, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_REAL, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
@@ -3595,14 +3595,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_propriety_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_REAL_8, type_id, hdferr)
+      call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_REAL_8, real(fill_val, kind=DP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_DOUBLE, real(fill_val, kind=DP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_REAL_8, val, adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
