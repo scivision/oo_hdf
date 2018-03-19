@@ -379,7 +379,7 @@ module H5_Func_mod
 
 !#################################################################################################!
     function Ch_Attr_exist(obj_id, a_name)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         logical :: Ch_Attr_exist
         integer(HID_T) :: attr_id, space_id
@@ -390,7 +390,7 @@ module H5_Func_mod
 
 !#################################################################################################!
     function number_attrs(obj_id)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         integer(kind=HID_T) :: number_attrs
         TYPE(h5o_info_t), TARGET   :: object_info
         integer :: hdferr
@@ -401,7 +401,7 @@ module H5_Func_mod
 
 !#################################################################################################!
     subroutine attr_type_size(obj_id, a_name, att_type, att_type_size, hdferr)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, type_id
         integer :: hdferr
@@ -417,7 +417,7 @@ module H5_Func_mod
 
 !#################################################################################################!
     function get_att_name_idx(obj_id, obj_name, idx, a_name) result(hdferr)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in)  :: obj_name
         integer, intent(in) :: idx
         character(len=*), intent(out) :: a_name
@@ -448,7 +448,7 @@ module H5_Func_mod
 
 !#################################################################################################!
     function get_obj_name(obj_id, obj_name) result(hdferr)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(inout)  :: obj_name
         integer(kind=8) :: name_size
         integer :: hdferr
@@ -459,7 +459,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int16_Attr0(obj_id, a_name, val) result(stat)
         integer(kind=I16), intent(in) :: val
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -480,7 +480,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int16_Attr1(obj_id, a_name, val) result(stat)
         integer(kind=I16), contiguous, intent(in) :: val(:)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -506,7 +506,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int32_Attr0(obj_id, a_name, val) result(stat)
         integer(kind=HID_T), intent(in) :: val
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -527,7 +527,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int32_Attr1(obj_id, a_name, val) result(stat)
         integer(kind=HID_T), contiguous, intent(in) :: val(:)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -553,7 +553,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Char_Attr0(obj_id, a_name, val) result(stat)
         character(len=*), intent(in) :: val
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -575,7 +575,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Char_Attr1(obj_id, a_name, val) result(stat)
         character(len=*), intent(in) :: val(:)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -610,7 +610,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         real(kind=SP), intent(in) :: val
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -639,7 +639,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         real(kind=SP), contiguous, intent(in) :: val(:)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -673,7 +673,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         real(kind=DP), intent(in) :: val
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -702,7 +702,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         real(kind=DP), contiguous, intent(in) :: val(:)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -730,7 +730,7 @@ module H5_Func_mod
         ! Creates an empty dataset with the only purpose of an attributes
         ! storage. (Here used to hold the spatial reference system
         ! attributes, 'grid_maping'.)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         integer(HID_T) :: dset_id, space_id
         character (len=*), intent(in) :: d_name
         integer(kind=HID_T) :: stat
@@ -751,7 +751,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         integer(kind=HID_T), intent(out) :: val(:)
         integer(kind=HID_T), parameter :: D_RANK=rank(val)
         character(len=255), intent(in) :: dset_name
@@ -782,7 +782,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         real(kind=SP), intent(out) :: val(:)
         integer, parameter :: D_RANK=rank(val)
@@ -813,7 +813,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         integer(kind=HID_T), intent(out) :: val(:,:)
         integer(kind=HID_T), parameter :: D_RANK=rank(val)
@@ -844,7 +844,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         real(kind=SP), intent(out) :: val(:,:)
         integer, parameter :: D_RANK=rank(val)
@@ -875,7 +875,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         integer(kind=HID_T), intent(out) :: val(:,:,:)
         integer(kind=HID_T), parameter :: D_RANK=rank(val)
@@ -906,7 +906,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         real(kind=SP), intent(out) :: val(:,:,:)
         integer, parameter :: D_RANK=rank(val)
@@ -937,7 +937,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         integer(kind=HID_T), intent(out) :: val(:,:,:,:)
         integer(kind=HID_T), parameter :: D_RANK=rank(val)
@@ -968,7 +968,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         real(kind=SP), intent(out) :: val(:,:,:,:)
         integer, parameter :: D_RANK=rank(val)
@@ -999,7 +999,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         integer(kind=HID_T), intent(out) :: val(:,:,:,:,:)
         integer(kind=HID_T), parameter :: D_RANK=rank(val)
@@ -1030,7 +1030,7 @@ module H5_Func_mod
         ! Reads a section of a HDF5 dataset
         !
         implicit none
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=255), intent(in) :: dset_name
         real(kind=SP), intent(out) :: val(:,:,:,:,:)
         integer, parameter :: D_RANK=rank(val)
@@ -1067,7 +1067,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         character(len=*), intent(out) :: val(:)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character(len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -1096,7 +1096,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         character(len=*), intent(out) :: val
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -1125,7 +1125,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         real(kind=SP), intent(out) :: val(:)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -1154,7 +1154,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         real(kind=SP), intent(out) :: val
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -1183,7 +1183,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         real(kind=DP), intent(out) :: val(:)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -1212,7 +1212,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         real(kind=DP), intent(out) :: val
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -1242,7 +1242,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         integer(kind=HID_T), intent(out) :: val(:)
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -1271,7 +1271,7 @@ module H5_Func_mod
         ! If no group id is given, the dataset will be get from
         ! the root group ("/").
         integer(kind=HID_T), intent(out) :: val
-        integer, intent(in) :: obj_id
+        integer(HID_T), intent(in) :: obj_id
         character (len=*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
         integer(kind=HID_T) :: stat
@@ -2533,7 +2533,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int8_1d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I8), contiguous, intent(in) :: val(:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2569,7 +2569,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int16_1d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I16), contiguous, intent(in) :: val(:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2605,7 +2605,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int32_1d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=HID_T), contiguous, intent(in) :: val(:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2641,7 +2641,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real32_1d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=SP), contiguous, intent(in) :: val(:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2677,7 +2677,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real64_1d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=DP), contiguous, intent(in) :: val(:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2713,7 +2713,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int8_2d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I8), contiguous, intent(in) :: val(:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2749,7 +2749,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int16_2d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I16), contiguous, intent(in) :: val(:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2785,7 +2785,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int32_2d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2821,7 +2821,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real32_2d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=SP), contiguous, intent(in) :: val(:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2857,7 +2857,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real64_2d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=DP), contiguous, intent(in) :: val(:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2893,7 +2893,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int8_3d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I8), contiguous, intent(in) :: val(:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2929,7 +2929,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int16_3d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I16), contiguous, intent(in) :: val(:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -2964,7 +2964,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int32_3d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3000,7 +3000,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real32_3d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=SP), contiguous, intent(in) :: val(:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3036,7 +3036,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real64_3d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=DP), contiguous, intent(in) :: val(:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3072,7 +3072,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int8_4d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I8), contiguous, intent(in) :: val(:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3108,7 +3108,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int16_4d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I16), contiguous, intent(in) :: val(:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3144,7 +3144,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int32_4d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3180,7 +3180,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real32_4d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=SP), contiguous, intent(in) :: val(:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3216,7 +3216,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real64_4d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=DP), contiguous, intent(in) :: val(:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3252,7 +3252,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int8_5d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I8), contiguous, intent(in) :: val(:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3288,7 +3288,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int16_5d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I16), contiguous, intent(in) :: val(:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3324,7 +3324,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int32_5d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3360,7 +3360,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real32_5d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=SP), contiguous, intent(in) :: val(:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3396,7 +3396,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real64_5d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=DP), contiguous, intent(in) :: val(:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3432,7 +3432,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int8_6d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I8), contiguous, intent(in) :: val(:,:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3468,7 +3468,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int16_6d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=I16), contiguous, intent(in) :: val(:,:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3504,12 +3504,12 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Int32_6d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       integer(kind=HID_T), contiguous, intent(in) :: val(:,:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
       integer :: hdferr
-      integer(kind=HID_T), parameter :: D_RANK=rank(val)
+      integer, parameter :: D_RANK=rank(val)
       integer(HID_T) :: type_id ! DataType identifier
       integer(kind=HID_T), optional, intent(in) :: fill_val
       integer(kind=HID_T), optional, intent(in) :: extendable
@@ -3540,7 +3540,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real32_6d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=SP), contiguous, intent(in) :: val(:,:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
@@ -3576,7 +3576,7 @@ module H5_Func_mod
 !#################################################################################################!
     function Create_Real64_6d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
       real(kind=DP), contiguous, intent(in) :: val(:,:,:,:,:,:)
-      integer, intent(in) :: obj_id
+      integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
       integer(kind=HID_T) :: stat
