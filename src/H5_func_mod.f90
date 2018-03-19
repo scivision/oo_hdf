@@ -2705,11 +2705,9 @@ module H5_Func_mod
       integer(I8), contiguous, intent(in) :: val(:,:)
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
-      character (len=*), intent(in) :: d_name
-      integer :: stat
+      character(*), intent(in) :: d_name
       integer :: hdferr
       integer, parameter :: D_RANK=rank(val)
-      integer(HID_T) :: type_id ! DataType identifier
       integer, optional, intent(in) :: fill_val
       integer, optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
@@ -2722,20 +2720,18 @@ module H5_Func_mod
       adims = shape(val)
       call create_property_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
-      if (hdferr/=0) error stop 'int8_2d: could not set datatype'
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_CHARACTER, fill_val, hdferr)
         if (hdferr/=0) error stop 'int8_2d: could not fill value'
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       if (hdferr/=0) error stop 'int8_2d: could not create slab'
-      call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
+      call H5dcreate_f(obj_id, d_name, H5T_NATIVE_CHARACTER, space_id, dset_id, hdferr, prp_id)
       if (hdferr/=0) error stop 'int8_2d: could not create dataset '//d_name
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_CHARACTER, val, adims, hdferr)
+      if (hdferr/=0) error stop 'int8_2d: could not write dataset '//d_name
       call H5dclose_f(dset_id,hdferr)
-      call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
       call H5pclose_f(prp_id, hdferr)
     end function Create_Int8_2d_Dataset
@@ -2769,7 +2765,7 @@ module H5_Func_mod
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
+      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
