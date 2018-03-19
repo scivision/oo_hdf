@@ -2,7 +2,7 @@
 
 ## [1.1.1] 2017.04.10 - Ricardo Torres
 ### Fixed
- - Bug correction in h5 funciton calls
+ - Bug correction in h5 function calls
 
 ## [1.1.0] 2017.04.07 - Ricardo Torres
 ### Created

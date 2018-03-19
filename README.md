@@ -15,8 +15,8 @@ There are two main classes, *H5Group* and *H5Dataset*. The *H5File* is extended 
 ### Tested
 
 This library was tested with versions:
- - **HDF5**: 1.8.11, 1.8.16
- - **gfortran**: 4.8.\*, 5.4.\* 
+ - **HDF5**: 1.8.11, 1.8.16, 1.10.1
+ - **gfortran**: 4.8.\*, 5.4.\*, 6.\*, 7.\*, 8.\*
 
 The following methods have been tested in several ways, most of them in production code:
  - All H5File
@@ -37,20 +37,20 @@ The following methods have been tested in several ways, most of them in producti
 
 ### Interface
  #### H5File
-  ```fortran 
+  ```fortran
   type(H5File) :: file
-  
+
   file = H5File(' path of the file ', status, mode)
 !status can be: (OLD, O, NEW, N, REPLACE, RP), not case sensitive
 !mode can be: (READ, R, WRITE, W, READWRITE, RW), not case sensitive
 
-``` 
+```
 
-  ```fortran 
+  ```fortran
   call file%closeFile()
-  ``` 
+  ```
  #### H5Group
-  ```fortran 
+  ```fortran
   type(H5Group) :: newgroup
   type(H5Group) :: oldgroup
   ```
@@ -59,7 +59,7 @@ The following methods have been tested in several ways, most of them in producti
   call file%setGroup('name of the new group', newgroup)
   call newgroup%openGroup('name of an existing group', oldgroup)
   call oldgroup%closeGroup()
-  
+
   call newgroup%getNumObj(number_of_objects)
   ! number_of_objects is integer 32 bits, method counts the all the groups and datasets in a group
 
@@ -68,34 +68,34 @@ The following methods have been tested in several ways, most of them in producti
 
   call newgroup%isDset(obj_name)
   ! logical method that verifies if an object is a Dataset
-  
+
   call newgroup%isGrp(obj_name)
   ! logical method that verifies if an object is a Group
   ```
  #### H5Dataset
-  ```fortran 
+  ```fortran
   type(H5Dataset) :: newdataset
   newdataset = H5Dataset('Name of the dataset', parent group)
   ```
 Define the chunk size of the dataset:
-  ```fortran 
+  ```fortran
   call newdataset%setChunkSize(chunksize)
   ! chunksize is an integer, if not defined is by default 100
   ```
 
 Define the compression level of the dataset:
-  ```fortran 
+  ```fortran
   call newdataset%setCompressionLevel(CompressionLevel)
   ! CompressionLevel is an integer that must vary between 0 and 9, if not defined is by default 9
   ```
 Define the fill value of the dataset:
-  ```fortran 
+  ```fortran
   call newdataset%setFillValue(fillvalue)
   ! fillvalue is an integer, if not defined is by default 0
   ```
 
 Define the dataset is extendable in n  dimentions:
-  ```fortran 
+  ```fortran
   call newdataset%setExtendable(n)
   ! n is an integer less or equal to the dataset dimensions
   ! the dataset gets extended from the last rank to the start
@@ -103,23 +103,23 @@ Define the dataset is extendable in n  dimentions:
   ! the last two dimensions become extendable
   ```
 Define an empty dataset:
-  ```fortran 
+  ```fortran
   call newdataset%setEmpty()
   ```
 Get the dataset rank:
-  ```fortran 
+  ```fortran
   call newdataset%getRank(rank)
   !rank is an integer
   ```
 
 Get the dataset dimensions:
-  ```fortran 
+  ```fortran
   call newdataset%getDims(dims)
   !Dims must be an integer array with the dataset rank
   ```
 
 Define dimension (scale) of an array
-  ```fortran 
+  ```fortran
   type(H5Dataset) :: dim_dset
   call dim_dset%setDataset(x)
   call dim_dset%defScale(dimension_name)
@@ -127,14 +127,14 @@ Define dimension (scale) of an array
   ```
 
 Link a dimension (scale) to an array
-  ```fortran 
+  ```fortran
   call newdataset%setScale(dim_dset,idx_dim)
   !dim_dset is the scale object you wish to link with your dataset
   !idx_dim is an integer with the rank of the dataset where you will link the scale
   ```
 
 Read the entire dataset:
-  ```fortran 
+  ```fortran
   call newdataset%getDataset(dset_array)
   !dset_array can be an array of 1 to 6 dimensions
   !dset_array can be an integer of 32 bits or a real of 64 bits
@@ -142,7 +142,7 @@ Read the entire dataset:
   ```
 
 Read a block of a dataset:
-  ```fortran 
+  ```fortran
   call newdataset%getBlock(offset, shape, d_array)
   !offset is a one dimension integer of 64 bits array with the size of the rank of the dataset to read,
   !this array must have the starting points of where you will read the array
@@ -155,7 +155,7 @@ Read a block of a dataset:
   ```
 
 Write a Dataset:
-  ```fortran 
+  ```fortran
   call newdataset%setDataset(dset_array)
   !dset_array can be an array of 1 to 6 dimensions
   !dset_array can be an integer of 8, 16 or 32 bits
@@ -163,7 +163,7 @@ Write a Dataset:
   ```
 
 Extend a Dataset:
-  ```fortran 
+  ```fortran
   call newdataset%extendDataset(new_size, offset, dshape, val)
   !dset_array can be an array of 1 to 6 dimensions
   !dset_array can be an integer of 8, 16 or 32 bits
@@ -178,14 +178,14 @@ Extend a Dataset:
 !dshape is a one dimension integer of 64 bits array with the size of the rank of the dataset to extend,
 !this array must have the size of the portion the array you want to write
 !
-  
+
   ```
 
 #### H5Attributable
 This class is only accessed from an object of class H5Group or H5Dataset.
 
 Verify if an attribute exists:
-  ```fortran 
+  ```fortran
   if ( newdataset%Attr_exists(a_name) ) then
         print*,a_name//' exists'
   end if
@@ -193,19 +193,19 @@ Verify if an attribute exists:
   !a_name is the name of the attribute to check
   ```
 Get the number of attributes of an object:
-  ```fortran 
+  ```fortran
   call newdataset%getNumberAttrs(number_of_attributes)
   !number_of_attributes is an integer of 32 bits
   ```
 get the name of an attribute by index, the attributes names are retrived by alphabetical order
-  ```fortran 
+  ```fortran
   call newdataset%getAttNameByIdx(idx, a_name)
   !idx is an integer of 32 bits
   !a_name is the name of the attribute to check
   ```
 
 Read an attribute:
-  ```fortran 
+  ```fortran
   call newdataset%getAttribute(a_name, val)
   call file%getAttribute(a_name, val)
   call newgroup%getAttribute(a_name, val)
@@ -214,7 +214,7 @@ Read an attribute:
   !val can be a scalar or an array of one dimension.
   ```
 Write an attribute:
-  ```fortran 
+  ```fortran
   call newdataset%setAttribute(a_name, val)
   call file%setAttribute(a_name, val)
   call newgroup%setAttribute(a_name, val)
@@ -225,13 +225,13 @@ Write an attribute:
 
 ### Examples:
  - Write file, dataset and attribute:
- 
+
  ```fortran
 
   type(H5File) :: f1
   type(H5Dataset) :: d1, d2
   type(H5Group) :: g1
- 
+
   !Open a new, write only, file
   f1=H5File("new_test_file.h5", "N", "W")
   !write an attribute in /
@@ -261,9 +261,9 @@ Write an attribute:
   !close hdf5 file
   call f1%closeFile()
  ```
- 
+
   - Read the contents of a HDF5 file:
-  
+
   ```fortran
   !Open an existing, read only, file
   f1=H5File("new_test_file.h5", "O", "R")
@@ -281,5 +281,5 @@ Write an attribute:
   call d2%getDataset(r8_dset)
   !close hdf5 file
   call f1%closeFile()
-  
+
   ```
