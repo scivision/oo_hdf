@@ -814,7 +814,7 @@ function newH5File( filename, state, mode )
   character(*), intent(in) :: filename        !< the HDF5 filename
   character(*), optional, intent(in) :: state !< file state (OLD, NEW, REPLACE)
   character(*), optional, intent(in) :: mode  !< file mode (READ, WRITE, READWRITE)
-  integer(I32) :: error
+  integer :: error
 
   newH5File%id = hdf_open_file(filename, state, mode)
 end function newH5File

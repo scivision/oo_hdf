@@ -6,13 +6,11 @@ program test_h5_funcs
   type(H5Dataset) :: d1, d2
   type(H5Group) :: g1
 
-  integer(4) :: file_id, gr_id, file2_id
-  integer(4) :: error
-  character(10) :: chararr(2)
-  integer(4) :: read_a(19)
-  integer(4) :: value
-  integer(4) :: test_arr(4,3)
-  integer(4) :: i, j
+
+  integer :: read_a(19)
+
+  integer :: test_arr(4,3)
+  integer :: i, j
   real(DP) :: r8_dset(4)
 
 
@@ -24,10 +22,9 @@ program test_h5_funcs
 
   call d1%setFillValue(-1)
 
-  print*,f1%id
+  print*,'file ID',f1%id
 
   call f1%setGroup('newgroup',g1)
-
 
   d2=H5Dataset('4d_r64',g1)
 !  call d1%showstatus()
@@ -39,6 +36,7 @@ program test_h5_funcs
   end do
 
   call d1%setDataset(int(test_arr,1))
+  stop
   call d1%setAttribute('thgttg',int(42,2))
 
   call d2%setDataset(real([[1],[2],[4],[5]],DP))

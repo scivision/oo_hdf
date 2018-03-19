@@ -22,9 +22,9 @@ add_library(h5oo src/H5_OO_mod.f90 src/H5_func_mod.f90 src/Strings_Func_mod.f90 
 target_link_libraries(h5oo PRIVATE ${HDF5_Fortran_LIBRARIES} ${HDF5_Fortran_HL_LIBRARIES})
 
 
-add_executable(test_h5oo_mod tests/test_objs.f90)
-target_link_libraries(test_h5oo_mod h5oo)
+add_executable(test_h5objs tests/test_objs.f90)
+target_link_libraries(test_h5objs h5oo)
 #---------------------------
 enable_testing()
-add_test(NAME h5oo_mod COMMAND test_h5oo_mod)
+add_test(NAME h5oo_mod COMMAND test_h5objs)
 

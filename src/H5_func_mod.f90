@@ -137,14 +137,15 @@ module H5_Func_mod
 !#################################################################################################!
   function hdf_open_file(filename, state, mode) result(file_id)
     integer(HID_T) :: file_id            !< HDF5 id of the file
-    character(len=*), intent(in) :: filename        !< the HDF5 filename
-    character(len=*), optional, intent(in) :: state !< file state (OLD, NEW, REPLACE)
-    character(len=*), optional, intent(in) :: mode  !< file mode (READ, WRITE, READWRITE)
+    character(*), intent(in) :: filename        !< the HDF5 filename
+    character(*), optional, intent(in) :: state !< file state (OLD, NEW, REPLACE)
+    character(*), optional, intent(in) :: mode  !< file mode (READ, WRITE, READWRITE)
     integer :: hdferr
     character(len=16) :: state2, mode2
 
     ! open hdf5 interface
     call h5open_f(hdferr)
+    if (hdferr/=0) error stop 'error opening '//filename
 
     ! set defaults
     state2 = 'NEW'
@@ -160,18 +161,14 @@ module H5_Func_mod
            (mode2 == 'READWRITE') .or. (mode2 == 'RW') ) then
         call h5fopen_f(filename, H5F_ACC_RDWR_F, file_id, hdferr)
       else
-        print*,"hdf_open: mode = "//trim(mode2)//" not supported."
-        print*,"Use READ, WRITE or READWRITE (R, W, RW)"
-        stop
+        error stop "hdf_open: mode = "//trim(mode2)//" not supported. \n Use READ, WRITE or READWRITE (R, W, RW)"
       end if
     elseif (state2 == 'NEW' .or. state2 == 'N') then
       call h5fcreate_f(filename, H5F_ACC_TRUNC_F, file_id, hdferr)
     elseif (state2 == 'REPLACE' .or. state2 == 'RP') then
       call h5fcreate_f(filename, H5F_ACC_EXCL_F, file_id, hdferr)
     else
-      print*,"hdf_open: state = "//trim(state2)//" not supported."
-      print*,"Use OLD, NEW or REPLACE (O, N, RP)"
-      stop
+      error stop "hdf_open: state = "//trim(state2)//" not supported. \n Use OLD, NEW or REPLACE (O, N, RP)"
     end if
 
   end function hdf_open_file
@@ -2705,7 +2702,7 @@ module H5_Func_mod
 
 !#################################################################################################!
     function Create_Int8_2d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
-      integer(kind=I8), contiguous, intent(in) :: val(:,:)
+      integer(I8), contiguous, intent(in) :: val(:,:)
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
@@ -2726,12 +2723,16 @@ module H5_Func_mod
       call create_property_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
       call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
+      if (hdferr/=0) error stop 'int8_2d: could not set datatype'
       if (present(fill_val)) then
         call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
+        if (hdferr/=0) error stop 'int8_2d: could not fill value'
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
+      if (hdferr/=0) error stop 'int8_2d: could not create slab'
       call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
+      if (hdferr/=0) error stop 'int8_2d: could not create dataset '//d_name
       call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
       call H5dclose_f(dset_id,hdferr)
       call H5tclose_f(type_id, hdferr)
