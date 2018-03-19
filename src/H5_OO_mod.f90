@@ -38,7 +38,7 @@ implicit none
 
 !#################################################################################################!
   type :: H5Attributable
-    integer(I32) :: id
+    integer(HID_T) :: id
     contains
 
       procedure, public  :: Attr_exists
@@ -117,10 +117,10 @@ implicit none
 !#################################################################################################!
   type, extends(H5Attributable) :: H5Dataset
     character(255) :: d_name
-    integer(I32), private :: parent_id
+    integer(HID_T), private :: parent_id
 
     integer(I32), private :: compression_level
-    integer(I32), private :: chunk_size
+    integer(HSIZE_T), private :: chunk_size
     integer(I32), private :: fill_value
     integer(I32), private :: extendable
     contains
@@ -358,7 +358,7 @@ function Attr_exists(self, a_name)
   character(*), intent (in):: a_name
   logical :: Attr_exists
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -375,7 +375,7 @@ subroutine getAttNameByIdx(self, idx, a_name)
   integer(I32), intent(in) :: idx
   character(*), intent(out) :: a_name
   character(80) :: obj_name
-  integer :: dset_id
+  integer(HID_T) :: dset_id
   integer :: hdferr
 
   select type (self)
@@ -393,7 +393,7 @@ subroutine getNumberAttrs(self, n_attrs)
   class(H5Attributable), intent(in) :: self
   integer(I32), intent(out) :: n_attrs
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -411,7 +411,7 @@ subroutine getAttTypeSize(self, a_name, att_type, att_type_size)
   integer(I32), intent(out) :: att_type
   integer(I64), intent(out) :: att_type_size
   integer(I32) :: hdferr
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -428,7 +428,7 @@ subroutine getAttDims(self, a_name, dims)
   character(*), intent (in):: a_name
   integer, intent(out) :: dims(:)
   integer(I32) :: hdferr
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -445,7 +445,7 @@ subroutine set_Int16_Attr0(self, a_name, val)
   integer(I16), intent (in):: val
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -462,7 +462,7 @@ subroutine set_Int16_Attr1(self, a_name, val)
   integer(I16), intent (in):: val(:)
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -479,7 +479,7 @@ subroutine set_Int32_Attr0(self, a_name, val)
   integer(I32), intent (in):: val
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -496,7 +496,7 @@ subroutine set_Int32_Attr1(self, a_name, val)
   integer(I32), intent (in):: val(:)
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -513,7 +513,7 @@ subroutine set_Real32_Attr0(self, a_name, val)
   real(SP), intent (in):: val
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -530,7 +530,7 @@ subroutine set_Real32_Attr1(self, a_name, val)
   real(SP), intent (in):: val(:)
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -547,7 +547,7 @@ subroutine set_Real64_Attr0(self, a_name, val)
   real(DP), intent (in):: val
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -564,7 +564,7 @@ subroutine set_Real64_Attr1(self, a_name, val)
   real(DP), intent (in):: val(:)
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -581,7 +581,7 @@ subroutine set_Char_Attr0(self, a_name, val)
   character(*), intent (in):: val
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -598,7 +598,7 @@ subroutine set_Char_Attr1(self, a_name, val)
   character(*), intent (in):: val(:)
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -615,7 +615,7 @@ subroutine get_Char_Attr0(self, a_name, val)
   character(*), intent (out):: val
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -632,7 +632,7 @@ subroutine get_Char_Attr1(self, a_name, val)
   character(*), intent (out):: val(:)
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -649,7 +649,7 @@ subroutine get_Int_Attr0(self, a_name, val)
   integer(I32), intent (out):: val
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -666,7 +666,7 @@ subroutine get_Int_Attr1(self, a_name, val)
   integer(I32), intent (out):: val(:)
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -683,7 +683,7 @@ subroutine get_Real32_Attr0(self, a_name, val)
   real(SP), intent (out):: val
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -700,7 +700,7 @@ subroutine get_Real32_Attr1(self, a_name, val)
   real(SP), intent (out):: val(:)
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -717,7 +717,7 @@ subroutine get_Real64_Attr0(self, a_name, val)
   real(DP), intent (out):: val
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -734,7 +734,7 @@ subroutine get_Real64_Attr1(self, a_name, val)
   real(DP), intent (out):: val(:)
   character(*), intent (in):: a_name
   integer(I32) :: error
-  integer(I32) :: dset_id
+  integer(HID_T) :: dset_id
 
   select type (self)
     class is (H5Dataset)
@@ -782,7 +782,7 @@ end subroutine getNumObj
 
 subroutine getObjNameByIdx(self, idx, obj_name)
   class(H5Group) :: self
-  integer(I32), intent(in) :: idx
+  integer(HID_T), intent(in) :: idx
   character(*), intent(out) :: obj_name
   integer(I32) :: hdferr
 
@@ -1742,7 +1742,7 @@ subroutine defScale(self,dim_name)
   class(H5Dataset) :: self
   character(*), intent(in), optional :: dim_name
   integer(I32) :: ierr
-  integer(I32) :: dim_id, dset_id
+  integer(HID_T) :: dim_id, dset_id
 
   dim_id = open_dset(self%parent_id,self%d_name)
   if (present(dim_name)) then
@@ -1757,7 +1757,7 @@ subroutine setScale(self,dim_dset,idx_dim)
   class(H5Dataset), intent(in) :: dim_dset
   integer(I32), intent(in) :: idx_dim
   integer(I32) :: ierr
-  integer(I32) :: dim_id, dset_id
+  integer(HID_T) :: dim_id, dset_id
 
   dset_id = open_dset(self%parent_id,self%d_name)
   dim_id = open_dset(dim_dset%parent_id,dim_dset%d_name)

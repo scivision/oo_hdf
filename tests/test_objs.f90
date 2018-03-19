@@ -33,7 +33,7 @@ program test_h5_funcs
 !  call d1%showstatus()
 
   do concurrent (i=1:size(test_arr(:,1)))
-    do concurrent (j=1,size(test_arr(1,:)))
+    do concurrent (j=1:size(test_arr(1,:)))
       test_arr(i,j)=i*j
     end do
   end do
