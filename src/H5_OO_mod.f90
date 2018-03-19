@@ -444,7 +444,7 @@ subroutine set_Int16_Attr0(self, a_name, val)
   class(H5Attributable), intent(in) :: self
   integer(I16), intent (in):: val
   character(*), intent (in):: a_name
-  integer(I32) :: error
+  integer :: error
   integer(HID_T) :: dset_id
 
   select type (self)

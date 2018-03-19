@@ -36,10 +36,11 @@ program test_h5_funcs
   end do
 
   call d1%setDataset(int(test_arr,1))
-  stop
+
   call d1%setAttribute('thgttg',int(42,2))
 
   call d2%setDataset(real([[1],[2],[4],[5]],DP))
+  stop
   call d1%setAttribute('att1', int([4,4,2,5,4,6,3,1,1,5,5,2,4,2154545,6,2,4,7,6],4))
 
   call f1%closeFile()

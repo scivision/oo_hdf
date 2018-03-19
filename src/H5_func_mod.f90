@@ -444,7 +444,7 @@ module H5_Func_mod
 !#################################################################################################!
     function get_obj_name(obj_id, obj_name) result(hdferr)
         integer(HID_T), intent(in) :: obj_id
-        character(len=*), intent(inout)  :: obj_name
+        character(*), intent(inout)  :: obj_name
         integer(kind=8) :: name_size
         integer :: hdferr
 
@@ -452,12 +452,11 @@ module H5_Func_mod
     end function get_obj_name
 
 !#################################################################################################!
-    function Create_Int16_Attr0(obj_id, a_name, val) result(stat)
-        integer(kind=I16), intent(in) :: val
+    function Create_Int16_Attr0(obj_id, a_name, val) result(hdferr)
+        integer(I16), intent(in) :: val
         integer(HID_T), intent(in) :: obj_id
-        character(len=*), intent(in) :: a_name
+        character(*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer :: stat
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 2 ! DataType Size in Bytes
@@ -468,17 +467,18 @@ module H5_Func_mod
         call H5screate_f(H5S_SCALAR_F, space_id, hdferr)
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
-        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
+        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, hdferr)
+        if (hdferr/=0) error stop 'could not set int16 attribute0 '//a_name
         call H5aclose_f(attr_id,hdferr)
     end function Create_Int16_Attr0
 
 !#################################################################################################!
-    function Create_Int16_Attr1(obj_id, a_name, val) result(stat)
+    function Create_Int16_Attr1(obj_id, a_name, val) result(hdferr)
         integer(kind=I16), contiguous, intent(in) :: val(:)
         integer(HID_T), intent(in) :: obj_id
-        character(len=*), intent(in) :: a_name
+        character(*), intent(in) :: a_name
         integer(HID_T) :: attr_id, space_id
-        integer :: stat
+
         integer :: hdferr
         integer(HID_T) :: type_id ! DataType identifier
         integer(SIZE_T), parameter :: HDFSIZE = 2 ! DataType Size in Bytes
@@ -493,7 +493,8 @@ module H5_Func_mod
         end if
         call H5tset_size_f(type_id, HDFSIZE, hdferr)
         call H5acreate_f(obj_id, trim(a_name), type_id, space_id, attr_id, hdferr)
-        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
+        call H5awrite_f(attr_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, hdferr)
+        if (hdferr/=0) error stop 'could not set int16 attribute1 '//a_name
         call H5aclose_f(attr_id,hdferr)
     end function Create_Int16_Attr1
 
@@ -2666,14 +2667,12 @@ module H5_Func_mod
 
 !#################################################################################################!
     function Create_Real64_1d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
-      real(kind=DP), contiguous, intent(in) :: val(:)
+      real(DP), contiguous, intent(in) :: val(:)
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
-      character (len=*), intent(in) :: d_name
-      integer :: stat
+      character(*), intent(in) :: d_name
       integer :: hdferr
       integer, parameter :: D_RANK=rank(val)
-      integer(HID_T) :: type_id ! DataType identifier
       integer, optional, intent(in) :: fill_val
       integer, optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
@@ -2684,18 +2683,28 @@ module H5_Func_mod
       integer(HID_T) :: prp_id ! Property identifier
 
       adims = shape(val)
-      call create_property_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
+      call create_property_list(D_RANK, adims, in_chunk_size, comp_level, extendable, &
+                                prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
       if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_DOUBLE, real(fill_val, kind=DP), hdferr)
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_DOUBLE, real(fill_val, DP), hdferr)
+        if (hdferr/=0) error stop 'real64_1d: could not set fill values'
       end if
 
-      call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
-      call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
+      call H5screate_simple_f(D_RANK, adims, &
+                              space_id, hdferr, &
+                              max_dims)
+      if (hdferr/=0) error stop 'real64_1d: could not create slab'
+
+      call H5dcreate_f(obj_id, d_name, H5T_NATIVE_DOUBLE, space_id, dset_id, hdferr, prp_id)
+      if (hdferr/=0) error stop 'real64_1d: could not create dataset '//d_name
+
+      print *,adims,in_chunk_size,comp_level, extendable, max_dims
+            stop
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, hdferr)
+      if (hdferr/=0) error stop 'real64_1d: could not write dataset '//d_name
+
       call H5dclose_f(dset_id,hdferr)
-      call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
       call H5pclose_f(prp_id, hdferr)
     end function Create_Real64_1d_Dataset
@@ -3205,14 +3214,12 @@ module H5_Func_mod
 
 !#################################################################################################!
     function Create_Real64_4d_Dataset(obj_id, d_name, val, fill_val, in_chunk_size, comp_level, extendable) result(dset_id)
-      real(kind=DP), contiguous, intent(in) :: val(:,:,:,:)
+      real(DP), contiguous, intent(in) :: val(:,:,:,:)
       integer(HID_T), intent(in) :: obj_id
       integer(HID_T) :: dset_id, space_id
       character (len=*), intent(in) :: d_name
-      integer :: stat
       integer :: hdferr
       integer, parameter :: D_RANK=rank(val)
-      integer(HID_T) :: type_id ! DataType identifier
       integer, optional, intent(in) :: fill_val
       integer, optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
@@ -3225,16 +3232,18 @@ module H5_Func_mod
       adims = shape(val)
       call create_property_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_DOUBLE, type_id, hdferr)
       if (present(fill_val)) then
         call H5pset_fill_value_f(prp_id, H5T_NATIVE_DOUBLE, real(fill_val, kind=DP), hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
-      call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, stat)
+      call H5dcreate_f(obj_id, d_name, H5T_NATIVE_DOUBLE, space_id, dset_id, hdferr, prp_id)
+      if (hdferr/=0) error stop 'real64_4d: could not create dataset '//d_name
+
+      call H5dwrite_f(dset_id, H5T_NATIVE_DOUBLE, val, adims, hdferr)
+      if (hdferr/=0) error stop 'real64_4d: could not write '//d_name
+
       call H5dclose_f(dset_id,hdferr)
-      call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
       call H5pclose_f(prp_id, hdferr)
     end function Create_Real64_4d_Dataset
@@ -3248,7 +3257,6 @@ module H5_Func_mod
       integer :: stat
       integer :: hdferr
       integer, parameter :: D_RANK=rank(val)
-      integer(HID_T) :: type_id ! DataType identifier
       integer, optional, intent(in) :: fill_val
       integer, optional, intent(in) :: extendable
       integer, optional, intent(in) :: comp_level ! Compression level
@@ -3261,16 +3269,14 @@ module H5_Func_mod
       adims = shape(val)
       call create_property_list(D_RANK, adims, in_chunk_size, comp_level, extendable, prp_id, max_dims)
 
-      call H5tcopy_f(H5T_NATIVE_CHARACTER, type_id, hdferr)
-      if (present(fill_val)) then
-        call H5pset_fill_value_f(prp_id, H5T_NATIVE_INTEGER, fill_val, hdferr)
+        if (present(fill_val)) then
+        call H5pset_fill_value_f(prp_id, H5T_NATIVE_CHARACTER, fill_val, hdferr)
       end if
 
       call H5screate_simple_f(D_RANK, adims, space_id, hdferr, max_dims)
-      call H5dcreate_f(obj_id, d_name, type_id, space_id, dset_id, hdferr, prp_id)
-      call H5dwrite_f(dset_id, H5T_NATIVE_INTEGER, int(val,kind=HID_T), adims, stat)
+      call H5dcreate_f(obj_id, d_name, H5T_NATIVE_CHARACTER, space_id, dset_id, hdferr, prp_id)
+      call H5dwrite_f(dset_id, H5T_NATIVE_CHARACTER, val, adims, stat)
       call H5dclose_f(dset_id,hdferr)
-      call H5tclose_f(type_id, hdferr)
       call H5sclose_f(space_id, hdferr)
       call H5pclose_f(prp_id, hdferr)
     end function Create_Int8_5d_Dataset
